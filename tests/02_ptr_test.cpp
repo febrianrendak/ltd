@@ -14,7 +14,7 @@ struct Block
     }
 
     ~Block() {
-        CounterA--;
+        CounterA--; 
     }
 };
 

@@ -29,6 +29,12 @@ namespace ltd
             other.raw = nullptr;
         }
 
+        template<typename... A>
+        ptr(A&&... args)
+        {
+            raw = new T(std::forward<A>(args)...);
+        }
+
         ptr(ptr& other) = delete;
         ptr(const ptr& other) = delete;
         ptr& operator=(ptr other) = delete;
