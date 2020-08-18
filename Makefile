@@ -18,11 +18,12 @@ bin/lib/%.o: lib/%.cpp $(DEPS)
 bin/tests/%.o: tests/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-bin/%test: bin/tests/%test.o $(OBJ_LIB)
+bin/tests/%: bin/tests/%.o $(OBJ_LIB)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-tests: bin/01_test bin/02_ptr_test
-	bin/01_test
-	bin/02_ptr_test
+tests: bin/tests/01_test bin/tests/02_ptr_test bin/tests/03_returns
+	bin/tests/01_test
+	bin/tests/02_ptr_test
+	bin/tests/03_returns
 
 all: tests

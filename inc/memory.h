@@ -95,7 +95,7 @@ namespace ltd
                 delete raw_block;
 
                 raw_block = nullptr;
-                raw_block_size = 0
+                raw_block_size = 0;
             }
         }
 
@@ -107,7 +107,7 @@ namespace ltd
     class array
     {
     private:
-        using allocator_type = typename std::conditional<Capacity>0, A, B>::type;
+        using allocator_type = typename std::conditional<C != 0, A, B>::type;
         allocator_type allocator;
 
     public:

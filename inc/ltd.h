@@ -1,6 +1,11 @@
 #ifndef _LTD_INCLUDE_LTD_H_
 #define _LTD_INCLUDE_LTD_H_
 
+#include <tuple>
+
+template<typename... Args>
+using ret = std::tuple<Args...>;
+
 namespace ltd {}
  
 #include "application.h"
