@@ -4,5 +4,7 @@
 namespace ltd {}
  
 #include "application.h"
+#include "errors.h"
+#include "testunit.h"
 
 #endif // _LTD_INCLUDE_LTD_H_
