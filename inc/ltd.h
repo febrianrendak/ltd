@@ -5,5 +5,4 @@ namespace ltd {}
  
 #include "application.h"
 
-
 #endif // _LTD_INCLUDE_LTD_H_
