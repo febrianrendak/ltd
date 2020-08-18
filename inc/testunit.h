@@ -17,25 +17,35 @@ namespace ltd {
         std::function<error(test_case*)> func;
 
     public:
-        test_case(const char *case_name, std::function<error(test_case*)> test_func);
+        test_case();
         ~test_case();
+
+        void set(const char *case_name, std::function<error(test_case*)> test_func);
 
         error run();
         void test(bool value, const char* comment);
 
         int get_pass_count() const;
         int get_fail_count() const;
+
     };
 
+    #define MAX_CASE    32
     class test_unit : application 
     {
     private:
+        test_case cases[MAX_CASE];
+        int cases_count;
 
     public:
         test_unit();
         ~test_unit();
 
         void test(const char* case_name, std::function<error(test_case*)> test_func);
+
+        int main();
+
+        virtual int testing() = 0;
     };
 
 }

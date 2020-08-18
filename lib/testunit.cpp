@@ -7,8 +7,8 @@
 
 namespace ltd
 {
-    test_case::test_case(const char *case_name, std::function<error(test_case*)> test_func)
-        : name(case_name), func(test_func)
+    test_case::test_case()
+        : name(nullptr), func(nullptr)
     {
 
     }
@@ -16,6 +16,12 @@ namespace ltd
     test_case::~test_case()
     {
 
+    }
+
+    void test_case::set(const char *case_name, std::function<error(test_case*)> test_func)
+    {
+        name = case_name;
+        func = test_func;
     }
 
     error test_case::run()
@@ -26,7 +32,7 @@ namespace ltd
         error err = func(this);
         auto end = time::now();
         
-        auto elapsed = end-start;
+        auto elapsed = end - start;
 
         if (err != error::no_error) {
             printf("    Error running '%s'\n", name);
@@ -59,20 +65,26 @@ namespace ltd
         return fail_count;
     }
 
-    test_unit::test_unit()
+    test_unit::test_unit() : cases_count(0)
     {
 
     }
-
+ 
     test_unit::~test_unit()
     {
 
     }
 
-    void test_unit::test(const char* case_name, std::function<error(test_case*)> test_func)
+    void test_unit::test(const char *case_name, std::function<error(test_case*)> test_func)
     {
-        test_case test(case_name, test_func);
-        test.run();
+        cases[cases_count].set(case_name, func);
+        // test_case test(case_name, test_func);
+        // test.run();
+    }
+
+    int test_unit::main()
+    {
+        return this->testing();
     }
 
 } // namespace ltd

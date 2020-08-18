@@ -5,7 +5,7 @@ using namespace ltd;
 class test01 : test_unit
 {
 public:
-    int main() 
+    int testing() 
     {
         this->test("First", [](test_case *tc) -> error {
             tc->test(true, "Expected to be true");
