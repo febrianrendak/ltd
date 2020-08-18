@@ -35,10 +35,9 @@ namespace ltd
         auto elapsed = end - start;
 
         if (err != error::no_error) {
-            printf("    Error running '%s'\n", name);
+            printf("%s    '%s'     %.3fs\n", "ERROR", name, (float) elapsed.count()/1000000);
         } else {
-            printf("%s\n", fail_count == 0 ? "PASS" : "FAIL");
-            printf("'%s' tested in %.3fs\n", name, (float) elapsed.count()/1000000);
+            printf("%s    '%s'     %.3fs\n", fail_count == 0 ? "PASS" : "FAIL", name, (float) elapsed.count()/1000000);
         }
 
         return err;
@@ -48,10 +47,10 @@ namespace ltd
     {
         if(value == true) {
             pass_count++;
-            printf("    PASS: %d/%d\n", pass_count, pass_count + fail_count);
+            printf("    ok....... %d/%d\n", pass_count, pass_count + fail_count);
         } else {
             fail_count++;
-            printf("    FAIL: %d/%d - %s\n", pass_count, pass_count + fail_count, comment);
+            printf("    failed... %d/%d - %s\n", pass_count, pass_count + fail_count, comment);
         }
     }
 
@@ -75,10 +74,16 @@ namespace ltd
 
     }
 
-    void test_unit::test(const char *case_name, std::function<error(test_case*)> test_func)
+    error test_unit::test(const char *case_name, std::function<error(test_case*)> test_func)
     {
-        cases[cases_count].set(case_name, test_func);
-        cases_count++;
+        if (cases_count < MAX_CASE) 
+        {
+            cases[cases_count].set(case_name, test_func);
+            cases_count++;
+            return error::no_error;
+        } 
+
+        return error::overflow;
     }
 
     int test_unit::main()

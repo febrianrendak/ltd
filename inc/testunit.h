@@ -41,7 +41,7 @@ namespace ltd {
         test_unit();
         ~test_unit();
 
-        void test(const char* case_name, std::function<error(test_case*)> test_func);
+        error test(const char* case_name, std::function<error(test_case*)> test_func);
 
         int main();
 
