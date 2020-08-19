@@ -6,17 +6,21 @@ TARGET=./
 CFLAGS=-I$(INCLUDE) -std=c++17 -Wall -pedantic
 LIBS=-lstdc++fs
 
-_DEPS=application.h errors.h ltd.h testunit.h
+_DEPS=application.h errors.h fmt.h ltd.h testunit.h datetime.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS))
 
-_OBJ_LIB=application.o errors.o main.o testunit.o
+_OBJ_LIB=application.o errors.o fmt.o main.o testunit.o datetime.o
 OBJ_LIB=$(patsubst %.o, bin/lib/%.o, $(_OBJ_LIB))
 
 bin/lib/%.o: lib/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-01_test:
+bin/tests/%.o: tests/%.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-test: 01_test
+bin/%test: bin/tests/%test.o $(OBJ_LIB)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-all: $(OBJ_LIB)
+tests: bin/01_test
+
+all: tests

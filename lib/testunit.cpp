@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 #include "../inc/testunit.h"
+#include "../inc/fmt.h"
+#include "../inc/datetime.h"
 
 namespace ltd
 {
@@ -18,10 +20,19 @@ namespace ltd
 
     error test_case::run()
     {
+        printf("==> RUN '%s'\n", name);
+
+        auto start = time::now(); 
         error err = func(this);
+        auto end = time::now();
         
+        auto elapsed = end-start;
+
         if (err != error::no_error) {
-            printf("Error running '%s'\n", name);
+            printf("    Error running '%s'\n", name);
+        } else {
+            printf("%s\n", fail_count == 0 ? "PASS" : "FAIL");
+            printf("'%s' tested in %.3fs\n", name, (float) elapsed.count()/1000000);
         }
 
         return err;
@@ -31,10 +42,10 @@ namespace ltd
     {
         if(value == true) {
             pass_count++;
-            printf("Pass... %d/%d\n", pass_count, pass_count + fail_count);
+            printf("    PASS: %d/%d\n", pass_count, pass_count + fail_count);
         } else {
             fail_count++;
-            printf("Fail... %d/%d - %s\n", pass_count, pass_count + fail_count, comment);
+            printf("    FAIL: %d/%d - %s\n", pass_count, pass_count + fail_count, comment);
         }
     }
 
