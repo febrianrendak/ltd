@@ -4,11 +4,11 @@ ltd::application *app_instance = nullptr;
 
 namespace ltd
 {
-    error application::bootstrap(int argc, char *argv[])
+    int application::bootstrap(int argc, char *argv[])
     {
-        int code = main();
-        set_exit_code(code);
-        return error::no_error;
+        set_exit_code(main());
+
+        return exit_code;
     }
 
     application::application()

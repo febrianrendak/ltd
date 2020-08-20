@@ -48,7 +48,7 @@ namespace ltd
          * This function is called internally by the framework. This should not
          * be called directly.
          */ 
-        error bootstrap(int argc, char *argv[]);
+        int bootstrap(int argc, char *argv[]);
 
         /**
          * @brief Get the single instance of application

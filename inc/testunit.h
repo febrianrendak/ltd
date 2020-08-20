@@ -45,7 +45,7 @@ namespace ltd {
 
         int main();
 
-        virtual int testing() = 0;
+        virtual void setup() = 0;
     };
 
 }

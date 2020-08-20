@@ -77,14 +77,19 @@ namespace ltd
 
     void test_unit::test(const char *case_name, std::function<error(test_case*)> test_func)
     {
-        cases[cases_count].set(case_name, func);
-        // test_case test(case_name, test_func);
-        // test.run();
+        cases[cases_count].set(case_name, test_func);
+        cases_count++;
     }
 
     int test_unit::main()
     {
-        return this->testing();
+        this->setup();
+
+        for (int i=0; i < cases_count; i++) {
+            cases[i].run();
+        }
+
+        return 0;
     }
 
 } // namespace ltd
