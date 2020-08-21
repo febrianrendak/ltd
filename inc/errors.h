@@ -119,6 +119,7 @@ namespace ltd
 
     inline bool operator==(const error& lhs, const error& rhs){ return lhs.code == rhs.code; }
     inline bool operator!=(const error& lhs, const error& rhs){ return !(lhs == rhs); }
+    
 } // namespace ltd
 
 #endif // _LTD_INCLUDE_ERRORS_H_

@@ -22,9 +22,13 @@ namespace ltd
 
     public:
         /**
-         * @brief default constructor.
+         * @brief Constructor.
          */
         application();
+
+        /**
+         * @brief Destructor.
+         */
         ~application();
 
         /**
@@ -51,7 +55,7 @@ namespace ltd
         int bootstrap(int argc, char *argv[]);
 
         /**
-         * @brief Get the single instance of application
+         * @brief Get the single instance of application.
          */ 
         static application * get_instance();
     };
