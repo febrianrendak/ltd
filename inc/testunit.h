@@ -46,6 +46,11 @@ namespace ltd {
         void test(bool value, const char* comment);
 
         /**
+         * @bried Short hand help for test function without comment.
+         */ 
+        void test(bool value);
+
+        /**
          * @brief Returns the number of passed checks.
          */ 
         int get_pass_count() const;
@@ -62,12 +67,39 @@ namespace ltd {
     /**
      * @brief This is a class that provides the functionalities for test units.
      * 
-     * To user this class, create a derived class from this class and implements the `setup()` method.
+     * To user this class, create a derived class from this class and implements the `setup()` method and 
+     * then create the instance of the class on the stack.
      * 
      * In the method, calls the `test()` function to register a test function. The class will execute the
      * test functions automatically.
      * 
+     * ```
+     *  class test01 : test_unit
+     *  {
+     *  public:
+     *      void setup() 
+     *      {
+     *          this->test("First", [](test_case *tc) -> error {
      * 
+     *              tc->test(true, "Expected to be true");
+     *              tc->test(true, "Expected to be true");
+     * 
+     *              return error::no_error;
+     *          });
+     * 
+     *          this->test("Second", [](test_case *tc) -> error {
+     * 
+     *              tc->test(true, "Expected to be true");
+     *              tc->test(false, "Expected to be true");
+     *              tc->test(true, "Expected to be true");
+     * 
+     *              return error::no_error;
+     *          });
+     *      }
+     * };
+     * 
+     * test01 t;
+     * ```
      */ 
     class test_unit : application 
     {
@@ -76,13 +108,30 @@ namespace ltd {
         int cases_count;
 
     public:
+
+        /**
+         * @brief Constructor.
+         */ 
         test_unit();
+
+        /**
+         * @brief Destrutctor.
+         */ 
         ~test_unit();
 
+        /**
+         * @brief Register a test function with a given name.
+         */ 
         error test(const char* case_name, std::function<error(test_case*)> test_func);
 
+        /**
+         * @brief internal usage for the framework.
+         */ 
         int main();
 
+        /**
+         * @brief Setups the test unit.
+         */ 
         virtual void setup() = 0;
     };
 

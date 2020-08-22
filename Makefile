@@ -9,7 +9,7 @@ LIBS=-lstdc++fs
 _DEPS=application.h errors.h fmt.h ltd.h testunit.h datetime.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS))
 
-_OBJ_LIB=application.o errors.o fmt.o main.o testunit.o datetime.o
+_OBJ_LIB=application.o datetime.o errors.o fmt.o main.o testunit.o 
 OBJ_LIB=$(patsubst %.o, bin/lib/%.o, $(_OBJ_LIB))
 
 bin/lib/%.o: lib/%.cpp $(DEPS)
@@ -21,6 +21,8 @@ bin/tests/%.o: tests/%.cpp $(DEPS)
 bin/%test: bin/tests/%test.o $(OBJ_LIB)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-tests: bin/01_test
+tests: bin/01_test bin/02_ptr_test
+	bin/01_test
+	bin/02_ptr_test
 
 all: tests

@@ -40,6 +40,8 @@ namespace ltd
             printf("%s    '%s'     %.3fs\n", fail_count == 0 ? "PASS" : "FAIL", name, (float) elapsed.count()/1000000);
         }
 
+        printf("\n");
+        
         return err;
     }
 
@@ -50,8 +52,13 @@ namespace ltd
             printf("    ok....... %d/%d\n", pass_count, pass_count + fail_count);
         } else {
             fail_count++;
-            printf("    failed... %d/%d - %s\n", pass_count, pass_count + fail_count, comment);
+            printf("    failed... %d/%d - %s\n", pass_count, pass_count + fail_count, comment != nullptr ? comment : "");
         }
+    }
+
+    void test_case::test(bool value)
+    {
+        test(value, nullptr);
     }
 
     int test_case::get_pass_count() const

@@ -8,5 +8,6 @@ namespace ltd {}
 #include "fmt.h"
 #include "testunit.h"
 #include "datetime.h"
+#include "memory.h"
 
 #endif // _LTD_INCLUDE_LTD_H_
