@@ -49,6 +49,9 @@ public:
             ptr<Block> b4(999);
             tc->test(b4->Data == 999);
             
+            ptr<Block> b5 = make_ptr<Block>(1111);
+            tc->test(b5->Data == 1111);
+
             return error::no_error;
         });
     }
