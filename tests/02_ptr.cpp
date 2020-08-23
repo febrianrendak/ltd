@@ -13,6 +13,8 @@ struct Block
         CounterA++;
     }
 
+    Block(int d) : Data(d) {}
+
     ~Block() {
         CounterA--; 
     }
@@ -44,6 +46,9 @@ public:
             }
             tc->test(CounterA == 0, "CounterA should return to 0 when b1 is destroyed.");
 
+            ptr<Block> b4(999);
+            tc->test(b4->Data == 999);
+            
             return error::no_error;
         });
     }
