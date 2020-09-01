@@ -3,13 +3,14 @@
 
 namespace ltd
 {
-        /**
+    /**
      * @brief Template class ptr provides scoped pointer container. 
      * 
      * Use this pointer container to handle non-shared raw pointers to objects.
      * Once this container leaves its scope it will delete the pointer. Unless
      * the content of this container is moved to another container using
      * std::move().
+     * 
      * ```C++     
      *      ptr<Object> new_container(std::move(old_container));
      * ```

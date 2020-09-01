@@ -21,9 +21,10 @@ bin/tests/%.o: tests/%.cpp $(DEPS)
 bin/tests/%: bin/tests/%.o $(OBJ_LIB)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-tests: bin/tests/01_test bin/tests/02_ptr bin/tests/03_returns
+tests: bin/tests/01_test bin/tests/02_ptr bin/tests/03_returns bin/tests/04_arrays
 	bin/tests/01_test
 	bin/tests/02_ptr
 	bin/tests/03_returns
+	bin/tests/04_arrays
 
 all: tests
