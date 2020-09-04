@@ -80,7 +80,7 @@ namespace ltd
          * a function is expecting a certain value but receiving a value that is 
          * not as expected, then the function shall return this error.
          * 
-         * @brief Represents errpr for passing invalid arguments to a function.
+         * @brief Represens error for passing invalid arguments to a function.
          */ 
         static const error invalid_argument;
 
