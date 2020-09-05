@@ -14,5 +14,6 @@ namespace ltd {}
 #include "testunit.h"
 #include "datetime.h"
 #include "memory.h"
+#include "ptr.h"
 
 #endif // _LTD_INCLUDE_LTD_H_
