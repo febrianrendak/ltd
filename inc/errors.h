@@ -3,7 +3,7 @@
 
 namespace ltd
 {
-      /**
+    /**
      * @brief Provides functionalities for handling representation of errors.
      * 
      * Class error provide simple representation of error and declaration

@@ -4,43 +4,36 @@
 #include "errors.h"
 #include "stdalias.h"
 
+#include <cstddef>
+
 namespace ltd
 {
-    /**
-     * @brief Class static_buffer provides functionalities for static buffer.
-     */ 
-    template<size_t InitialSize>
+    template<unsigned int ItemCount, unsigned int ItemSize = 1>
     class static_buffer
     {
     private:
-        std::byte buffer[InitialSize];
+        std::byte buffer[ItemCount*ItemSize];
 
     public:
-
-        /**
-         * Construct static_buffer object.
-         */ 
-        static_buffer() {}
-
-        /**
-         * Access the memory at the given position.
-         */ 
-        ret<void*,error> at(size_t pos) const {
-            if (pos >= InitialSize) 
+        constexpr auto raw_length() const -> size_t 
+        { 
+            return ItemCount * ItemSize; 
+        }
+        
+        constexpr auto length() const -> size_t
+        { 
+            return ItemCount; 
+        }
+        
+        auto at(size_t pos) const -> ret<void*,error> 
+        {
+            if (pos >= length()) 
                 return {nullptr, error::index_out_of_bound};
 
-            return {&buffer[pos], error::no_error};
+            return {&buffer[pos*ItemSize], error::no_error};
         }
 
-        /**
-         * Returns the length of the buffer.
-         */ 
-        constexpr size_t length() const { return InitialSize; }
-        
-        /**
-         * This function only serves the compability purpose.
-         */
-        error ensure_capacity(size_t new_capacity) 
+        auto ensure_capacity(size_t new_capacity) const -> error 
         {
             return error::allocation_failure;
         } 
