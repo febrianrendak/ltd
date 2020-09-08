@@ -25,6 +25,16 @@ namespace ltd
             return ItemCount; 
         }
         
+        auto grow() -> error
+        {
+            return error::allocation_failure;
+        }
+
+        auto ensure_capacity(size_t new_capacity) -> error 
+        {
+            return error::allocation_failure;
+        }
+
         auto at(size_t pos) const -> ret<void*,error> 
         {
             if (pos >= length()) 
@@ -32,68 +42,58 @@ namespace ltd
 
             return {&buffer[pos*ItemSize], error::no_error};
         }
-
-        auto ensure_capacity(size_t new_capacity) const -> error 
-        {
-            return error::allocation_failure;
-        } 
     };
 
-    template<int InitialSize>
+    template<unsigned int ItemCount=1, unsigned int ItemSize=1, unsigned int Overflows=2>
     class dynamic_buffer
     {
     private:
         std::byte *main_buffer;
-        std::byte **overflows;
+        std::byte *overflows[Overflows];
         
-        size_t overflows_len;
         size_t main_buffer_len;
 
-        void delete_overflow_buffers()
+        void clear_overflow_buffers()
         {
-            for(int i=0; i < overflows_len; i++) {
+            for(int i=0; i < Overflows; i++) {
                 if(overflows[i] != nullptr) {
                     delete[] overflows[i];
                     overflows[i] = nullptr;
                 }
             }
-
-            delete[] overflows;
         }
 
-        void resize_overflows()
-        {
-            if(overflows == nullptr) {
-                overflows_len = 1;
-                overflows = new std::byte*[overflows_len];
-                for (int i=0; i < overflows_len; i++) {
-                    overflows_len[i] = nullptr;
-                }
-            } else {
-                std::byte **new_array;
-                size_t      new_len = overflows_len * 2;
-
-                new_array = new std::byte*[new_len];
-                for (int i=0; i < new_len; i++)
-                    new_array[i] = i < overflows_len ? overflows[i] : nullptr;
-
-                delete[] overflows;
-
-                overflows_len = new_len;
-                overflows     = new_array;
-            }
-        }
     public:
         dynamic_buffer() 
         {
-            main_buffer_len = InitialSize;
-            main_buffer     = new std::byte[InitialSize];
+            main_buffer_len = ItemCount;
+            main_buffer     = new std::byte[ItemCount*ItemSize];
         }
 
         ~dynamic_buffer()
         {
-            delete_overflow_buffers();
+            clear_overflow_buffers();
             delete[] main_buffer;
+        }
+
+        constexpr auto raw_length() const -> size_t 
+        { 
+            return ItemCount * ItemSize; 
+        }
+        
+        constexpr auto length() const -> size_t
+        { 
+            return ItemCount; 
+        }
+
+        auto grow() -> error
+        {
+            for(int i=0; i<Overflows; i++) {
+                if(overflows[i] == nullptr) {
+                    int new_len  = main_buffer_len * pow(2,i);
+                    overflows[i] = new std::byte[new_len];
+                }
+            }
         }
         
     };
