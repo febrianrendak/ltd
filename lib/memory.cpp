@@ -8,24 +8,38 @@ namespace ltd
 
         ret<void*,error> global_allocator::allocate(size_t byte_count)
         {
-            auto buffer = malloc(byte_count);
-            if(buffer==nullptr)
+            size_t* raw_buffer = (size_t*) malloc(byte_count+sizeof(size_t));
+
+            if(raw_buffer==nullptr)
                 return {nullptr, error::allocation_failure};
+
+            *raw_buffer = byte_count;                   // save the allocated bytes
+            raw_buffer++;                               // increment the buffer to the first byte
 
             bytes_allocated.fetch_add(byte_count);
 
-            return {buffer, error::no_error};
+            return {(void*)raw_buffer, error::no_error};
         }
 
         error global_allocator::deallocate(void* buffer)
         {
             if (buffer==nullptr)
                 return error::null_pointer;
-
-            free(buffer);
             
-            return error::no_error;
-        }
+            size_t* raw_buffer = (size_t*)buffer;
+            raw_buffer--;
 
+            size_t allocated = *raw_buffer;
+            size_t total_allocated = bytes_allocated.load();
+            
+            if (allocated > total_allocated)
+                return error::allocation_failure;
+
+            free(raw_buffer);
+            
+            bytes_allocated.fetch_sub(allocated);
+
+            return error::no_error;
+        }        
     } // namespace memory
 } // namespace ltd
