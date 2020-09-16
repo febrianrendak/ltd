@@ -6,10 +6,10 @@ TARGET=./
 CFLAGS=-I$(INCLUDE) -std=c++17 -Wall -pedantic
 LIBS=-lstdc++fs
 
-_DEPS=application.h errors.h fmt.h ltd.h testunit.h datetime.h
+_DEPS=application.h datetime.h errors.h fmt.h ltd.h memory.h testunit.h 
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS))
 
-_OBJ_LIB=application.o datetime.o errors.o fmt.o main.o testunit.o 
+_OBJ_LIB=application.o datetime.o errors.o fmt.o main.o memory.cpp testunit.o 
 OBJ_LIB=$(patsubst %.o, bin/lib/%.o, $(_OBJ_LIB))
 
 bin/lib/%.o: lib/%.cpp $(DEPS)

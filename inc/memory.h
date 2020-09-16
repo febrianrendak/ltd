@@ -1,8 +1,46 @@
 #ifndef _LTD_INCLUDE_MEMORY_H_
 #define _LTD_INCLUDE_MEMORY_H_
 
+#include <atomic>
+
+#include "errors.h"
+#include "stdalias.h"
+
 namespace ltd
 {
+    namespace memory 
+    {
+        class global_allocator
+        {
+            static std::atomic_ulong bytes_allocated;
+            
+        public:
+            ret<void*, error> allocate(size_t bytes_count);
+            error deallocate(void* buffer); 
+        };
+
+        template<typename T, int SIZE>
+        class static_allocator
+        {
+            std::byte buffer[sizeof(T)*SIZE];
+
+        public:
+            ret<T*, error> allocate(size_t count=SIZE)
+            {
+                if (count != SIZE)
+                    return {nullptr, error::allocation_failure};
+
+                return {(T*)&buffer[0], error::no_error};
+            }   
+
+            error deallocate(T* buffer)
+            {
+                return error::no_error;
+            }
+        };
+
+    } // namespace memory
+
     template<typename T, size_t Capacity>
     class stack_array_allocator
     {

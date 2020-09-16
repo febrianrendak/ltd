@@ -63,6 +63,12 @@ namespace ltd
             }
         }
 
+        auto consolidate() -> error
+        {
+            
+            return error::no_error;
+        }
+
     public:
         dynamic_buffer() 
         {
@@ -92,8 +98,11 @@ namespace ltd
                 if(overflows[i] == nullptr) {
                     int new_len  = main_buffer_len * pow(2,i);
                     overflows[i] = new std::byte[new_len];
+                    return error::no_error;
                 }
             }
+
+            // overflow is full. Consolidate to main buffer.
         }
         
     };
