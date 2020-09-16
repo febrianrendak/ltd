@@ -109,12 +109,19 @@ namespace ltd
         static const error no_error;
 
         /**
-         * Returns this value when the operation if failed because of some sort of
+         * Return this value when the operation if failed because of some sort of
          * resource allocation failure i.e. failed memory allocation or no free slot.
          * 
          * @brief Error caused by resource allocation failure.
          */
         static const error allocation_failure;
+
+        /**
+         * Return this value when there is an error where the given address is not a valid address.
+         * 
+         * @bried Error caused by addressing issues.
+         */
+        static const error invalid_address; 
     };
 
     inline bool operator==(const error& lhs, const error& rhs){ return lhs.code == rhs.code; }

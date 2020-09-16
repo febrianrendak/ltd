@@ -17,4 +17,5 @@ namespace ltd
     const error error::not_found            ("Not found");
     const error error::no_error             ("No error");
     const error error::allocation_failure   ("Allocation failure");
+    const error error::invalid_address      ("Invalid address"); 
 }
