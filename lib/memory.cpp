@@ -4,9 +4,9 @@ namespace ltd
 {
     namespace memory
     {
-        std::atomic_ulong global_allocator::bytes_allocated(0);
+        std::atomic_ulong system_allocator::bytes_allocated(0);
 
-        ret<void*,error> global_allocator::allocate(size_t byte_count)
+        ret<void*,error> system_allocator::allocate(size_t byte_count)
         {
             size_t* raw_buffer = (size_t*) malloc(byte_count+sizeof(size_t));
 
@@ -21,7 +21,7 @@ namespace ltd
             return {(void*)raw_buffer, error::no_error};
         }
 
-        error global_allocator::deallocate(void* buffer)
+        error system_allocator::deallocate(void* buffer)
         {
             if (buffer==nullptr)
                 return error::null_pointer;
