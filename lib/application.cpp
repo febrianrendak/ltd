@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "../inc/application.h"
 
 ltd::application *app_instance = nullptr;
@@ -13,6 +15,11 @@ namespace ltd
 
     application::application()
     {
+        if(app_instance != nullptr) {
+            fprintf(stderr, "Fatal error: duplicate application instance.\n");
+            exit(-1);
+        }
+
         app_instance = this;
     }
     

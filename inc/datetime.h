@@ -23,4 +23,4 @@ namespace ltd
     } // namespace time
 } // namespace ltd
 
-#endif // _COPELAND_INCLUDE_TIME_H_
+#endif // _LTD_INCLUDE_TIME_H_

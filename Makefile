@@ -3,13 +3,13 @@
 CC=g++
 INCLUDE=./inc
 TARGET=./
-CFLAGS=-I$(INCLUDE) -std=c++17 -Wall -pedantic
+CFLAGS=-I$(INCLUDE) -std=c++17
 LIBS=-lstdc++fs
 
-_DEPS=application.h datetime.h errors.h fmt.h ltd.h memory.h testunit.h 
+_DEPS=application.h buffers.h containers.h datetime.h errors.h fmt.h ltd.h memory.h ptr.h stdalias.h testunit.h 
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS))
 
-_OBJ_LIB=application.o datetime.o errors.o fmt.o main.o memory.cpp testunit.o 
+_OBJ_LIB=allocators.o application.o datetime.o errors.o fmt.o memory.o testunit.o 
 OBJ_LIB=$(patsubst %.o, bin/lib/%.o, $(_OBJ_LIB))
 
 bin/lib/%.o: lib/%.cpp $(DEPS)
@@ -18,13 +18,19 @@ bin/lib/%.o: lib/%.cpp $(DEPS)
 bin/tests/%.o: tests/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-bin/tests/%: bin/tests/%.o $(OBJ_LIB)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+bin/demos/%.o: demos/%.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-tests: bin/tests/01_test bin/tests/02_ptr bin/tests/03_returns bin/tests/04_arrays
-	bin/tests/01_test
-	bin/tests/02_ptr
-	bin/tests/03_returns
-	bin/tests/04_arrays
+bin/tests/%: bin/tests/%.o $(OBJ_LIB) bin/lib/main.o 
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) 
 
-all: tests
+tests: bin/tests/tests bin/tests/ptr bin/tests/returns bin/tests/arrays
+	bin/tests/tests
+	bin/tests/ptr
+	bin/tests/returns
+	bin/tests/arrays
+
+sandbox: bin/demos/sandbox.o $(OBJ_LIB)
+	$(CC) -o bin/demos/sandbox $^ $(CFLAGS) $(LIBS) 
+
+all: tests 
